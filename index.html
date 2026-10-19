@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¡La Ruleta Sin Fronteras! – ORI Universidad Mariana 2026</title>
+  <meta name="description" content="Juego interactivo de ruleta de preguntas para el conversatorio 'Aprender sin fronteras, crecer sin límites' organizado por la Oficina de Relaciones Nacionales e Internacionales (ORI) de la Universidad Mariana.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎡</text></svg>">
+</head>
+<body>
+
+  <!-- Iluminación ambiental superior estilo estudio de televisión -->
+  <div class="studio-spotlight-top" aria-hidden="true"></div>
+
+  <!-- ==========================================
+       CABECERA FLOTANTE TRASLÚCIDA (HUD SUPERIOR)
+       ========================================== -->
+  <header class="app-header">
+    <div class="header-container">
+      
+      <!-- Identidad y Branding -->
+      <div class="brand-group">
+        <div class="brand-badge" aria-label="ORI Mariana">ORI</div>
+        <div class="brand-titles">
+          <h1 class="brand-title">¡La Ruleta Sin Fronteras!</h1>
+          <span class="brand-subtitle">Universidad Mariana 2026 · "Aprender sin fronteras, crecer sin límites"</span>
+        </div>
+      </div>
+
+      <!-- Marcador de Premios en Tiempo Real (HUD) -->
+      <div class="hud-scoreboard" role="region" aria-label="Marcador de Premios">
+        <!-- Total Premios -->
+        <div class="hud-total-box">
+          <span class="hud-total-label">Premios en Juego</span>
+          <span class="hud-total-count" id="hud-total-prizes">6 / 6</span>
+        </div>
+
+        <!-- Premios Nivel Bajo (4 en total) -->
+        <div class="hud-item">
+          <div class="prize-tracker">
+            <div class="tracker-label bajo">
+              <span>🟢 Nivel Bajo (<span id="hud-count-bajo">4</span> restantes)</span>
+            </div>
+            <div class="prize-slots" id="hud-slots-bajo"></div>
+          </div>
+        </div>
+
+        <!-- Premios Nivel Difícil (2 en total) -->
+        <div class="hud-item">
+          <div class="prize-tracker">
+            <div class="tracker-label dificil">
+              <span>🔴 Nivel Difícil (<span id="hud-count-dificil">2</span> restantes)</span>
+            </div>
+            <div class="prize-slots" id="hud-slots-dificil"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Acciones de Cabecera -->
+      <div class="header-actions">
+        <!-- Botón de Silencio / Audio -->
+        <button type="button" class="btn-icon-nav" id="btn-mute" title="Activar/Silenciar sonido (Tecla M)">
+          🔊 <span class="nav-label">Audio</span>
+        </button>
+
+        <!-- Botón de Atajos -->
+        <button type="button" class="btn-icon-nav" id="btn-shortcuts" title="Atajos de teclado para el presentador">
+          ⌨️ <span class="nav-label">Atajos</span>
+        </button>
+
+        <!-- Botón de Configuración Rápida -->
+        <button type="button" class="btn-icon-nav" id="btn-settings" title="Configurar Casa ORI y opciones">
+          ⚙️ <span class="nav-label">Ajustes</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ==========================================
+       ESCENARIO PRINCIPAL DEL JUEGO
+       ========================================== -->
+  <main class="main-stage">
+    
+    <!-- Selector de Modo de Giro -->
+    <nav class="mode-selector-dock" aria-label="Selector de Modo de Giro">
+      <button type="button" class="mode-btn mode-bajo" id="mode-bajo" title="Tecla 1">
+        <span>🟢 Girar Nivel Bajo</span>
+      </button>
+      <button type="button" class="mode-btn mode-dificil" id="mode-dificil" title="Tecla 2">
+        <span>🔴 Girar Nivel Difícil</span>
+      </button>
+      <button type="button" class="mode-btn mode-mixto is-selected" id="mode-mixto" title="Tecla 3">
+        <span>🎲 Modo Mixto Automático</span>
+      </button>
+    </nav>
+
+    <!-- Arena de la Ruleta en Canvas -->
+    <section class="wheel-arena" aria-label="Ruleta de Concurso">
+      <div class="wheel-canvas-wrapper">
+        <canvas id="wheel-canvas" width="640" height="640" aria-label="Ruleta interactiva con preguntas del conversatorio"></canvas>
+        <!-- Disparador táctil en el centro de la rueda -->
+        <div class="center-spin-trigger" id="center-spin-trigger" title="Haz clic aquí o pulsa Espacio para girar"></div>
+      </div>
+    </section>
+
+    <!-- Botón Maestro de Giro y atajo -->
+    <section class="stage-controls">
+      <button type="button" class="btn-spin-master" id="spin-btn">
+        <span class="spin-icon">⚡</span>
+        <span>¡GIRAR RULETA!</span>
+      </button>
+      <div class="spin-shortcut-hint">
+        <span>Pulsa <kbd class="kbd-badge">Espacio</kbd> en el teclado para girar</span>
+      </div>
+    </section>
+
+    <!-- Dock Flotante de los 4 Estudiantes Invitados -->
+    <div class="guests-dock-container" aria-label="Invitados de Movilidad">
+      <div class="guests-dock">
+        <!-- Invitada 1: Ana María Mercado (Colombia) -->
+        <div class="guest-card" title="Movilidad Nacional · CECAR a Trabajo Social">
+          <span class="guest-flag" aria-hidden="true">🇨🇴</span>
+          <div class="guest-info">
+            <span class="guest-badge">Nacional · CECAR</span>
+            <span class="guest-name">Ana María Mercado Montes</span>
+            <span class="guest-details">Trabajo Social</span>
+          </div>
+        </div>
+
+        <!-- Invitada 2: Luciana Valencia (Chile) -->
+        <div class="guest-card" title="Movilidad Internacional · UFRO a Terapia Ocupacional">
+          <span class="guest-flag" aria-hidden="true">🇨🇱</span>
+          <div class="guest-info">
+            <span class="guest-badge">Internacional · UFRO</span>
+            <span class="guest-name">Luciana Andrea Valencia</span>
+            <span class="guest-details">Terapia Ocupacional</span>
+          </div>
+        </div>
+
+        <!-- Invitada 3: Celene Tello (Perú) -->
+        <div class="guest-card" title="Movilidad Internacional · UCV a Psicología">
+          <span class="guest-flag" aria-hidden="true">🇵🇪</span>
+          <div class="guest-info">
+            <span class="guest-badge">Internacional · UCV</span>
+            <span class="guest-name">Luz Celene Tello Fernández</span>
+            <span class="guest-details">Psicología</span>
+          </div>
+        </div>
+
+        <!-- Invitado 4: Diego Navarrete (México) -->
+        <div class="guest-card" title="Movilidad Internacional · UNIVA a Mercadeo">
+          <span class="guest-flag" aria-hidden="true">🇲🇽</span>
+          <div class="guest-info">
+            <span class="guest-badge">Internacional · UNIVA</span>
+            <span class="guest-name">Diego Navarrete Salmerón</span>
+            <span class="guest-details">Mercadeo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==========================================
+       FOOTER INSTITUCIONAL
+       ========================================== -->
+  <footer class="app-footer">
+    <div>
+      <strong>Oficina de Relaciones Nacionales e Internacionales (ORI)</strong> · Universidad Mariana 2026
+    </div>
+    <div class="footer-credits">
+      <span>Equipo: Sofía Vallejos, Marcela & Antony</span>
+      <span>•</span>
+      <span>Invitados: 🇨🇴 Colombia, 🇨🇱 Chile, 🇵🇪 Perú, 🇲🇽 México</span>
+    </div>
+  </footer>
+
+  <!-- ==========================================
+       MODAL DE PREGUNTA EN PANTALLA GIGANTE
+       (SIN PISTAS SEGÚN DIRECTRIZ ESTRICTA)
+       ========================================== -->
+  <div class="modal-overlay" id="question-modal" role="dialog" aria-modal="true" aria-labelledby="modal-question-text">
+    <div class="modal-card">
+      
+      <!-- Fila Superior: Nivel, Categoría y Cronómetro -->
+      <div class="modal-header-row">
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <span class="level-badge" id="modal-level-badge">🟢 NIVEL BAJO</span>
+          <span class="modal-category-text" id="modal-category">Requisitos Académicos</span>
+        </div>
+
+        <!-- Cronómetro interactivo de 15 segundos -->
+        <div class="timer-container">
+          <span class="timer-display" id="timer-display">15s</span>
+          <div class="timer-progress-track">
+            <div class="timer-progress-bar" id="timer-progress-bar"></div>
+          </div>
+          <button type="button" class="btn-timer-toggle" id="btn-toggle-timer" title="Pausar o reanudar cronómetro (Tecla T)">⏸️ Pausar</button>
+        </div>
+      </div>
+
+      <!-- Cuerpo de la Pregunta (Tipografía Gigante y Sin Pistas) -->
+      <div class="modal-body">
+        <span class="modal-question-title" id="modal-title">Pregunta #1</span>
+        <h2 class="modal-question-text" id="modal-question-text">Cargando pregunta...</h2>
+
+        <!-- Caja de Respuesta Revelada -->
+        <div class="answer-reveal-box" id="modal-answer-box">
+          <div class="answer-label">✅ Respuesta Oficial Verificada:</div>
+          <p class="answer-text" id="modal-answer-text"></p>
+        </div>
+      </div>
+
+      <!-- Botones de Acción para el Presentador -->
+      <div class="modal-footer">
+        <button type="button" class="btn-modal-action btn-reveal" id="btn-reveal-answer">
+          <span>👁️ Revelar Respuesta Correcta</span>
+          <kbd class="kbd-badge">R</kbd>
+        </button>
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button type="button" class="btn-modal-action btn-award" id="btn-award-winner">
+            <span>🏆 ¡Respuesta Correcta! Entregar Premio</span>
+            <kbd class="kbd-badge">G</kbd>
+          </button>
+
+          <button type="button" class="btn-modal-action btn-wrong" id="btn-wrong-answer" title="Sonar buzzer si el estudiante se equivoca">
+            <span>❌ Buzzer Error</span>
+            <kbd class="kbd-badge">B</kbd>
+          </button>
+
+          <button type="button" class="btn-modal-action btn-discard" id="btn-discard-question" title="Pasar turno y eliminar pregunta de la ruleta para que nunca se vuelva a repetir (sin descontar premio)">
+            <span>⏭️ Pasar Pregunta (No repetir)</span>
+            <kbd class="kbd-badge">P</kbd>
+          </button>
+
+          <button type="button" class="btn-modal-action btn-dismiss" id="btn-close-modal">
+            <span>Cerrar</span>
+            <kbd class="kbd-badge">Esc</kbd>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL DE CONFIGURACIÓN RÁPIDA (CASA ORI & RESET)
+       ========================================== -->
+  <div class="modal-overlay" id="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+    <div class="modal-card settings-sheet">
+      <div class="modal-header-row">
+        <h2 id="settings-title" style="font-size: 1.25rem; font-weight: 800; color: #fff;">⚙️ Configuración del Conversatorio</h2>
+        <button type="button" class="btn-icon-nav" id="btn-close-settings">✕ Cerrar</button>
+      </div>
+
+      <!-- Selección dinámica de la Casa de la ORI -->
+      <div class="form-group">
+        <label for="select-casa" class="form-label">Sede / Casa donde se ubica la oficina de la ORI:</label>
+        <select id="select-casa" class="apple-select">
+          <option value="Casa San Francisco">Casa San Francisco (Opción Oficial)</option>
+          <option value="Casa Santa Clara">Casa Santa Clara</option>
+        </select>
+        <span class="form-hint">
+          Esta configuración actualiza automáticamente la respuesta en vivo de la pregunta #20.
+        </span>
+      </div>
+
+      <!-- Estadísticas de preguntas restantes -->
+      <div class="stats-card-grid">
+        <div class="stat-box">
+          <span class="stat-title">🟢 Preguntas Nivel Bajo Restantes</span>
+          <span class="stat-value" id="stats-remaining-bajo">22 / 22</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-title">🔴 Preguntas Nivel Difícil Restantes</span>
+          <span class="stat-value" id="stats-remaining-dificil">14 / 14</span>
+        </div>
+      </div>
+
+      <!-- Opciones Avanzadas -->
+      <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--glass-border); padding-top: 16px; flex-wrap: wrap; gap: 10px;">
+        <button type="button" class="btn-modal-action btn-reveal" id="btn-trigger-finale-test">
+          🎉 Ver Pantalla Gran Final
+        </button>
+        <button type="button" class="btn-danger-outline" id="btn-reset-game">
+          🔄 Reiniciar Juego Completo
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL DE ATAJOS DE TECLADO
+       ========================================== -->
+  <div class="modal-overlay" id="shortcuts-modal" role="dialog" aria-modal="true" aria-labelledby="shortcuts-title">
+    <div class="modal-card" style="max-width: 620px;">
+      <div class="modal-header-row">
+        <h2 id="shortcuts-title" style="font-size: 1.25rem; font-weight: 800; color: #fff;">⌨️ Atajos de Teclado del Operador</h2>
+        <button type="button" class="btn-icon-nav" id="btn-close-shortcuts">✕</button>
+      </div>
+
+      <div class="shortcuts-list">
+        <div class="shortcut-row">
+          <span class="shortcut-desc">Girar la ruleta</span>
+          <kbd class="kbd-badge">Espacio</kbd>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-desc">Cambiar a Nivel Bajo (🟢)</span>
+          <kbd class="kbd-badge">1</kbd>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-desc">Cambiar a Nivel Difícil (🔴)</span>
+          <kbd class="kbd-badge">2</kbd>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-desc">Cambiar a Modo Mixto Automático (🎲)</span>
+          <kbd class="kbd-badge">3</kbd>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-desc">Revelar respuesta oficial</span>
+          <kbd class="kbd-badge">R</kbd>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-desc">Confirmar ganador y descontar premio</span>
+          <kbd class="kbd-badge">G</kbd>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-desc">Sonar buzzer de error</span>
+          <kbd class="kbd-badge">B</kbd>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-desc">Pasar pregunta y eliminar de ruleta (no repetir)</span>
+          <kbd class="kbd-badge">P</kbd>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-desc">Pausar / Reanudar cronómetro</span>
+          <kbd class="kbd-badge">T</kbd>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-desc">Silenciar / Activar sonido</span>
+          <kbd class="kbd-badge">M</kbd>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-desc">Cerrar tarjetas o modales</span>
+          <kbd class="kbd-badge">Esc</kbd>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       PANTALLA DE GRAN FINAL (CIERRE ÉPICO)
+       ========================================== -->
+  <div class="modal-overlay" id="finale-overlay" role="dialog" aria-modal="true" aria-labelledby="finale-title">
+    <div class="modal-card finale-card">
+      <div class="finale-trophy-hero" aria-hidden="true">🏆</div>
+      <h2 class="finale-title" id="finale-title">¡CONVERSATORIO ORI 2026!</h2>
+      <p class="finale-motto">"Aprender sin fronteras, crecer sin límites"</p>
+      <p class="finale-credits">
+        Oficina de Relaciones Nacionales e Internacionales (ORI)<br>
+        <strong>Equipo: Sofía Vallejos ("Profe Sofi"), Marcela y Antony</strong><br>
+        Universidad Mariana · San Juan de Pasto
+      </p>
+
+      <div class="finale-tags-grid">
+        <span class="finale-tag">🇨🇴 Ana María (Trabajo Social)</span>
+        <span class="finale-tag">🇨🇱 Luciana (Terapia Ocupacional)</span>
+        <span class="finale-tag">🇵🇪 Celene (Psicología)</span>
+        <span class="finale-tag">🇲🇽 Diego (Mercadeo)</span>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <button type="button" class="btn-modal-action btn-reveal" id="btn-close-finale">
+          <span>✨ Continuar Celebrando</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       CARGA DE SCRIPTS MODULARES (CERO DEPENDENCIAS)
+       ========================================== -->
+  <script src="js/questions.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/confetti.js"></script>
+  <script src="js/wheel.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

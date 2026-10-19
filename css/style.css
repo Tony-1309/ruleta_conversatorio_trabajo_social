@@ -1,0 +1,1106 @@
+/* ==========================================================================
+   ¡La Ruleta Sin Fronteras! – ORI Universidad Mariana 2026
+   Design System: Apple Fluid Interface & TV Game Show Aesthetics
+   Basado en principios WWDC: latencia cero, translucidez jerárquica y física de resortes
+   ========================================================================== */
+
+:root {
+  /* Paleta cromática principal */
+  --bg-deep: #070d1e;
+  --bg-surface: rgba(13, 24, 52, 0.72);
+  --bg-surface-elevated: rgba(20, 36, 76, 0.85);
+  --bg-card: rgba(11, 22, 48, 0.9);
+  
+  /* Acentos de Gala y Niveles de Concurso */
+  --color-gold: #fbbf24;
+  --color-gold-bright: #fef08a;
+  --color-gold-deep: #b45309;
+  --color-gold-glow: rgba(251, 191, 36, 0.38);
+
+  --color-bajo: #10b981;
+  --color-bajo-glow: rgba(16, 185, 129, 0.38);
+  --color-bajo-deep: #065f46;
+
+  --color-dificil: #f43f5e;
+  --color-dificil-glow: rgba(244, 63, 94, 0.42);
+  --color-dificil-deep: #881337;
+
+  --color-blue-ori: #1e3a8a;
+  --color-blue-bright: #3b82f6;
+
+  /* Tipografía y Textos */
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --text-inverse: #070d1e;
+
+  /* Materiales y Vidrio (Apple Translucency & Specular Light) */
+  --glass-border: rgba(255, 255, 255, 0.16);
+  --glass-border-bright: rgba(255, 255, 255, 0.32);
+  --glass-specular: inset 0 1px 1px 0 rgba(255, 255, 255, 0.28);
+  --glass-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.75), 0 0 1px 1px rgba(255, 255, 255, 0.08);
+
+  /* Curvas de Movimiento Apple (Fluid Physics Springs) */
+  --spring-snappy: cubic-bezier(0.16, 1, 0.3, 1);
+  --spring-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-standard: cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Reset y optimización de interacción táctil */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  background: 
+    radial-gradient(circle at 50% 10%, rgba(30, 58, 138, 0.5) 0%, transparent 60%),
+    radial-gradient(circle at 8% 75%, rgba(16, 185, 129, 0.18) 0%, transparent 45%),
+    radial-gradient(circle at 92% 80%, rgba(244, 63, 94, 0.2) 0%, transparent 48%),
+    #070d1e;
+  background-attachment: fixed;
+}
+
+/* ==========================================================================
+   ILUMINACIÓN AMBIENTAL ESTUDIO DE TELEVISIÓN
+   ========================================================================== */
+.studio-spotlight-top {
+  position: fixed;
+  top: -140px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 960px;
+  height: 420px;
+  background: radial-gradient(ellipse at center, rgba(251, 191, 36, 0.22) 0%, rgba(37, 99, 235, 0.14) 45%, transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ==========================================================================
+   CABECERA FLOTANTE TRASLÚCIDA (HUD SUPERIOR APPLE DESIGN)
+   ========================================================================== */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  background: var(--bg-surface);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+}
+
+.header-container {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Identidad ORI */
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-badge {
+  background: linear-gradient(135deg, #fbbf24 0%, #b45309 100%);
+  color: #070d1e;
+  font-weight: 900;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  padding: 6px 14px;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px var(--color-gold-glow), var(--glass-specular);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.brand-titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  background: linear-gradient(180deg, #ffffff 30%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.15;
+}
+
+.brand-subtitle {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
+}
+
+/* Marcador HUD de Premios en Tiempo Real */
+.hud-scoreboard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(8, 15, 34, 0.65);
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
+}
+
+.hud-total-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-right: 12px;
+  border-right: 1px solid var(--glass-border);
+}
+
+.hud-total-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-gold-bright);
+  font-weight: 700;
+}
+
+.hud-total-count {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.hud-item {
+  display: flex;
+  align-items: center;
+}
+
+.prize-tracker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tracker-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.tracker-label.bajo { color: #34d399; }
+.tracker-label.dificil { color: #fb7185; }
+
+.prize-slots {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.prize-pill {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  transition: transform 0.25s var(--spring-bounce), opacity 0.25s ease;
+}
+
+.prize-pill.is-active.bajo {
+  background: linear-gradient(135deg, #10b981 0%, #065f46 100%);
+  box-shadow: 0 0 10px var(--color-bajo-glow);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.prize-pill.is-active.dificil {
+  background: linear-gradient(135deg, #f43f5e 0%, #881337 100%);
+  box-shadow: 0 0 10px var(--color-dificil-glow);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.prize-pill.is-claimed {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  opacity: 0.55;
+  transform: scale(0.88);
+}
+
+/* Acciones de Cabecera */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.casa-pill-tag {
+  background: rgba(30, 58, 138, 0.5);
+  color: #93c5fd;
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.btn-icon-nav {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+  border: 1px solid var(--glass-border);
+  padding: 7px 14px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.08s ease, border-color 0.15s ease;
+  box-shadow: var(--glass-specular);
+}
+
+.btn-icon-nav:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--glass-border-bright);
+}
+
+.btn-icon-nav:active {
+  transform: scale(0.96);
+}
+
+.btn-icon-nav.is-muted {
+  color: #f87171;
+  border-color: rgba(248, 113, 113, 0.4);
+}
+
+/* ==========================================
+   ESCENARIO PRINCIPAL (MAIN STAGE)
+   ========================================== */
+.main-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 20px 10px;
+  max-width: 1300px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  z-index: 10;
+}
+
+/* Selector de Modo de Giro (Apple Segmented Control) */
+.mode-selector-dock {
+  background: rgba(10, 20, 45, 0.75);
+  backdrop-filter: blur(20px);
+  padding: 5px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), var(--glass-specular);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+
+.mode-btn {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  padding: 9px 20px;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s var(--spring-snappy);
+}
+
+.mode-btn:hover {
+  color: #ffffff;
+}
+
+.mode-btn:active {
+  transform: scale(0.96);
+}
+
+.mode-btn.is-selected {
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), var(--glass-specular);
+}
+
+.mode-btn.mode-bajo.is-selected {
+  background: linear-gradient(135deg, #10b981 0%, #065f46 100%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.mode-btn.mode-dificil.is-selected {
+  background: linear-gradient(135deg, #f43f5e 0%, #881337 100%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.mode-btn.mode-mixto.is-selected {
+  background: linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Arena de la Ruleta */
+.wheel-arena {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.wheel-canvas-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: grab;
+  touch-action: none;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.7));
+}
+
+.wheel-canvas-wrapper:active {
+  cursor: grabbing;
+}
+
+/* Disparador táctil central */
+.center-spin-trigger {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 20;
+}
+
+/* Botón Maestro de Giro */
+.stage-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-spin-master {
+  background: linear-gradient(135deg, #fef08a 0%, #fbbf24 45%, #b45309 100%);
+  color: #070d1e;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 16px 48px;
+  border-radius: 999px;
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  box-shadow: 0 12px 36px var(--color-gold-glow), var(--glass-specular);
+  transition: transform 0.12s var(--spring-snappy), filter 0.15s ease, box-shadow 0.2s ease;
+}
+
+.btn-spin-master:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+  box-shadow: 0 18px 45px var(--color-gold-glow), var(--glass-specular);
+}
+
+.btn-spin-master:active {
+  transform: scale(0.96) translateY(0);
+}
+
+.btn-spin-master.is-spinning {
+  opacity: 0.6;
+  pointer-events: none;
+  filter: grayscale(0.4);
+}
+
+.spin-icon {
+  font-size: 1.4rem;
+}
+
+.spin-shortcut-hint {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.kbd-badge {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #cbd5e1;
+}
+
+/* ==========================================================================
+   DOCK FLOTANTE DE INVITADOS (APPLE FLOATING DOCK)
+   Muestra a los 4 estudiantes nacionales e internacionales
+   ========================================================================== */
+.guests-dock-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 15px auto 0;
+  padding: 0 20px;
+}
+
+.guests-dock {
+  background: rgba(10, 20, 48, 0.65);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-top: 1px solid var(--glass-border-bright);
+  border-radius: 20px;
+  padding: 10px 18px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 12px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.4), var(--glass-specular);
+}
+
+.guest-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 12px;
+  border-radius: 14px;
+  transition: transform 0.2s var(--spring-snappy), background 0.2s ease, border-color 0.2s ease;
+}
+
+.guest-card:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.guest-card:active {
+  transform: scale(0.98);
+}
+
+.guest-flag {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.guest-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.guest-name {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.guest-details {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.guest-badge {
+  font-size: 0.64rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-gold-bright);
+}
+
+/* ==========================================================================
+   FOOTER INSTITUCIONAL
+   ========================================================================== */
+.app-footer {
+  width: 100%;
+  padding: 16px 24px;
+  background: rgba(6, 12, 28, 0.8);
+  border-top: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  flex-wrap: wrap;
+  z-index: 10;
+}
+
+.footer-credits {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   MODALES FLUIDOS ESTILO APPLE (APPLE SPRING SHEETS & MODALS)
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 8, 20, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.24s var(--ease-out-standard);
+}
+
+.modal-overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-top: 1px solid var(--glass-border-bright);
+  border-radius: 28px;
+  padding: 36px;
+  width: 100%;
+  max-width: 920px;
+  box-shadow: var(--glass-shadow), var(--glass-specular);
+  transform: scale(0.94) translateY(12px);
+  transition: transform 0.35s var(--spring-snappy), opacity 0.3s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.modal-overlay.is-open .modal-card {
+  transform: scale(1) translateY(0);
+}
+
+/* Encabezado del modal: Nivel, Categoría y Cronómetro */
+.modal-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 16px;
+}
+
+.level-badge {
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 6px 16px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.level-badge.level-bajo {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.level-badge.level-dificil {
+  background: rgba(244, 63, 94, 0.2);
+  color: #fb7185;
+  border: 1px solid rgba(244, 63, 94, 0.4);
+}
+
+.modal-category-text {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* Cronómetro Interactivo de 15 Segundos */
+.timer-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+}
+
+.timer-display {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #fff;
+  min-width: 36px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.timer-progress-track {
+  width: 90px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.timer-progress-bar {
+  height: 100%;
+  width: 100%;
+  background: var(--color-gold);
+  border-radius: 999px;
+  transition: width 1s linear, background-color 0.3s ease;
+}
+
+.btn-timer-toggle {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: color 0.15s ease;
+}
+
+.btn-timer-toggle:hover {
+  color: #fff;
+}
+
+/* Cuerpo de la Tarjeta */
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modal-question-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-gold-bright);
+}
+
+.modal-question-text {
+  font-size: clamp(1.4rem, 2.6vw, 2.1rem);
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+}
+
+/* Caja de Respuesta Revelada */
+.answer-reveal-box {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-radius: 18px;
+  padding: 18px 24px;
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  animation: answerExpand 0.3s var(--spring-snappy) forwards;
+}
+
+.answer-reveal-box.is-revealed {
+  display: flex;
+}
+
+@keyframes answerExpand {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.answer-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #34d399;
+}
+
+.answer-text {
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.35;
+}
+
+/* Botones de Acción del Modal */
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--glass-border);
+  padding-top: 20px;
+}
+
+.btn-modal-action {
+  padding: 12px 22px;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 0.08s ease, filter 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: var(--glass-specular);
+}
+
+.btn-modal-action:active {
+  transform: scale(0.96);
+}
+
+.btn-reveal {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-color: var(--glass-border-bright);
+}
+
+.btn-reveal:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-award {
+  background: linear-gradient(135deg, #10b981 0%, #065f46 100%);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 6px 20px var(--color-bajo-glow);
+}
+
+.btn-award:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 8px 24px var(--color-bajo-glow);
+}
+
+.btn-wrong {
+  background: rgba(244, 63, 94, 0.2);
+  color: #fb7185;
+  border-color: rgba(244, 63, 94, 0.4);
+}
+
+.btn-wrong:hover {
+  background: rgba(244, 63, 94, 0.32);
+}
+
+.btn-discard {
+  background: rgba(251, 191, 36, 0.16);
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.4);
+}
+
+.btn-discard:hover {
+  background: rgba(251, 191, 36, 0.26);
+  border-color: rgba(251, 191, 36, 0.65);
+}
+
+.btn-dismiss {
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid transparent;
+}
+
+.btn-dismiss:hover {
+  color: var(--text-muted);
+}
+
+/* Efecto de Sacudida Apple Error en Respuesta Incorrecta */
+.shake-error {
+  animation: appleShake 0.45s var(--spring-snappy);
+}
+
+@keyframes appleShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-12px); }
+  40%, 80% { transform: translateX(12px); }
+}
+
+/* ==========================================================================
+   MODAL DE AJUSTES Y CONFIGURACIÓN (SETTINGS SHEET)
+   ========================================================================== */
+.settings-sheet {
+  max-width: 620px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.apple-select {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border: 1px solid var(--glass-border-bright);
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  appearance: auto;
+}
+
+.apple-select option {
+  background: #0b1630;
+  color: #fff;
+}
+
+.form-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.stats-card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stat-box {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  padding: 14px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.stat-value {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.btn-danger-outline {
+  background: transparent;
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.4);
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-danger-outline:hover {
+  background: rgba(248, 113, 113, 0.15);
+}
+
+.btn-danger-outline:active {
+  transform: scale(0.96);
+}
+
+/* ==========================================================================
+   MODAL DE ATAJOS DE TECLADO
+   ========================================================================== */
+.shortcuts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.shortcut-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.shortcut-desc {
+  font-size: 0.88rem;
+  color: #e2e8f0;
+}
+
+/* ==========================================================================
+   PANTALLA DE GRAN FINAL (CELEBRACIÓN TOTAL)
+   ========================================================================== */
+.finale-card {
+  text-align: center;
+  align-items: center;
+  max-width: 840px;
+  padding: 48px 36px;
+  background: radial-gradient(circle at 50% 30%, rgba(30, 58, 138, 0.8) 0%, rgba(11, 22, 48, 0.95) 70%);
+}
+
+.finale-trophy-hero {
+  font-size: 4.8rem;
+  line-height: 1;
+  filter: drop-shadow(0 10px 30px var(--color-gold-glow));
+  animation: trophyFloat 3s ease-in-out infinite;
+}
+
+@keyframes trophyFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.05); }
+}
+
+.finale-title {
+  font-size: clamp(2rem, 3.8vw, 3rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  background: linear-gradient(180deg, #fef08a 0%, #fbbf24 60%, #b45309 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.15;
+}
+
+.finale-motto {
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  margin-top: 6px;
+}
+
+.finale-credits {
+  font-size: 1rem;
+  color: #93c5fd;
+  margin-top: 8px;
+}
+
+.finale-tags-grid {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.finale-tag {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border-bright);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   ACCESIBILIDAD Y MOVIMIENTO REDUCIDO (APPLE DESIGN COMPLIANCE)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .modal-overlay.is-open .modal-card {
+    transform: none !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .app-header, .mode-selector-dock, .guests-dock, .modal-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: #091329 !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .modal-card, .btn-modal-action, .btn-spin-master, .guest-card {
+    border-width: 2px !important;
+    border-color: #ffffff !important;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVIDAD Y OPTIMIZACIÓN MULTIDISPOSITIVO (AUDITORIO 16:9 / MÓVIL)
+   ========================================================================== */
+@media (max-width: 900px) {
+  .header-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .hud-scoreboard {
+    justify-content: center;
+    border-radius: 14px;
+  }
+  .header-actions {
+    justify-content: center;
+  }
+  .modal-card {
+    padding: 24px;
+  }
+  .modal-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .modal-footer > div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+}
